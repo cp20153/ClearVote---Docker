@@ -1,0 +1,20 @@
+# Use an official PHP image from the Docker Hub
+FROM php:7.4-apache
+
+# Install necessary PHP extensions
+RUN docker-php-ext-install mysqli pdo pdo_mysql
+
+# Copy the application code to the container
+COPY ./GIS Final_Source Code /var/www/html/
+
+# Copy and enable apache config
+COPY apache2.conf /etc/apache2/conf-available/servername.conf
+RUN if [ ! -L /etc/apache2/conf-enabled/servername.conf ]; then \
+    ln -s /etc/apache2/conf-available/servername.conf /etc/apache2/conf-enabled/; \
+fi
+
+# Set the working directory
+WORKDIR /var/www/html/
+
+# Expose port 80 to be able to access the application
+EXPOSE 80
